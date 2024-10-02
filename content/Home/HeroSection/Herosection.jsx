@@ -7,7 +7,7 @@ import Link from "next/link";
 
 
 const Herosection = ({ data }) => {
-  const { results } = data
+  const { results = [] } = data || {};
 
   const [populardata, setPopularData] = useState(null);
 

@@ -5,7 +5,7 @@ import { Fragment } from "react"
 
 
 const Recommendation = async ({ MovieId, type }) => {
-  const { results: recommendation } = await getRecommendation(MovieId, type)
+  const { results: recommendation = [] } = await getRecommendation(MovieId, type) || {};
 
   return (
     <div className="w-full min-[1125px]:max-w-[24rem]">
