@@ -18,7 +18,7 @@ const Home = async () => {
 
       <div className="w-full flex flex-col items-center z-10 relative main-responsive">
         <Trending data={trendingdata} />
-        {/* <WatchHistory /> */}
+        <WatchHistory />
         <Collection />
         <Popular />
         <TopRated data={top_rateddata} />

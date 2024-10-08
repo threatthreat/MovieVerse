@@ -11,9 +11,9 @@ export function WatchAreaContextProvider({ children, MovieInfo, MovieId }) {
   const searchparam = useSearchParams()
 
   const [episode, setEpisode] = useState(parseInt(searchparam.get('ep')) || 1);
+  const [season, setSeason] = useState(parseInt(searchparam.get('se')) || 1)
   const [watchInfo, setWatchInfo] = useState({ loading: true });
   const [episodes, setEpisodes] = useState([])
-  const [season, setSeason] = useState(1)
 
   const [episodeLoading, setEpisodeLoading] = useState(true)
 

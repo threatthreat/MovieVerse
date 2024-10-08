@@ -20,10 +20,13 @@ export const getWatchProgress = (isSlice = true) => {
     episode: item.episode,
     thumbnail: item.thumbnail,
     title: item.title || '', // title might be undefined, so we provide a fallback
+    media_type: item.media_type || "movie",
     videoURL: item.videoURL || '', // same for videoURL
     currentTime: item.currentTime || 0, // fallback for currentTime
     duration: item.duration || 0, // fallback for duration
     date: item.updatedDate || 0, // fallback for updatedDate,
+    episode: item.episode || 1,
+    season: item.season || 1,
   }));
 
   return data;

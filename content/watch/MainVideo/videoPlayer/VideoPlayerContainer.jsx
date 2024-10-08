@@ -1,12 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import LoadingVideo from '@/components/loadings/loadingVideo/loadingVideo';
-import useArtplayer from './useArtplayer';
 import { useWatchContext } from '@/context/Watch';
 import { useWatchSettingContext } from '@/context/WatchSetting';
+import MainVideoPlayer from './MainVideoPlayer';
 
-const VideoPlayerContainer = ({ getInstance }) => {
-  const artRef = useArtplayer(getInstance);
-  const { watchInfo } = useWatchContext();
+const VideoPlayerContainer = () => {
+  const { watchInfo, MovieInfo } = useWatchContext();
   const { watchSetting, setWatchSetting } = useWatchSettingContext();
 
   return (
@@ -15,7 +14,7 @@ const VideoPlayerContainer = ({ getInstance }) => {
         {watchInfo?.loading ? (
           <LoadingVideo />
         ) : (
-          <div ref={artRef} className="aspect-video"></div>
+          <MainVideoPlayer videoInfo={watchInfo} movieInfo={MovieInfo} />
         )}
       </div>
 

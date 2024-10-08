@@ -11,19 +11,20 @@ import { SaveProgress } from '@/utils/saveProgress';
 
 const useArtplayer = (getInstance) => {
   const { setEpisode, watchInfo, episode, animeid, AnimeInfo } = useWatchContext();
-  const { setWatchSetting, watchSetting } = useWatchSettingContext();
+  const { watchSetting } = useWatchSettingContext();
   const artRef = useRef();
 
 
   useEffect(() => {
     const initializeArtPlayer = () => {
-      const M3U8Url = watchInfo?.streamingData?.sources?.find(source => source?.quality === 'default')?.url;
+      const M3U8Url = `https://m3-u8-proxy-iota.vercel.app/m3u8-proxy?url=${encodeURIComponent(watchInfo?.server)}&headers=${encodeURIComponent(`{"referer": "${watchInfo?.referer}"}`)}`;
 
       if (!M3U8Url || watchInfo?.loading) return;
+      Artplayer.AUTO_PLAYBACK_TIMEOUT = 10000;
 
       try {
         const art = new Artplayer({
-          url: M3U8Url,
+          url: "https://m3-u8-proxy-iota.vercel.app/m3u8-proxy?url=https%3A%2F%2Ftmstr.luminousstreamhaven.com%2Fstream_new%2FH4sIAAAAAAAAAw3JXVuCMBgA0L_0MoZGdxUMQ1juG7hDNvNhw0gfw_j1dW5P79DJuRO4rUW4T226idAGtmnSu.gp3pye20nfRMN_K9BGA16OE2.raNbuMn.z5vU.oDzm_uuhmlBYFKrW46gu1M.gAz1KSuXqIw5nEKO9CiCiEzfsstLI0eJe3Bbtk7sKalGBvx21Xz4K0pgpJcPlZdXwjplRV2lo4YiWNbSoXhUSwMmQBz6EDvYQ7dq43LiC5nVGYYCZ1g1hNisf_8dtzLAY6cHkXaSm88wv3b6fhqgjJLMQWNsQyVWi2WgPg_.8tkbhGs19BR53Xku7Kw2bLFYZA2e07IpwZ4YrgfLErpD.AeXozr5BAQAA%2Fmaster.m3u8&headers=%7B%22referer%22%3A%20%22https%3A%2F%2Fate60vs7zcjhsjo5qgv8.com%2F%22%7D",
           setting: true,
           theme: '#7569c8',
           autoplay: watchSetting?.autoPlay,
@@ -40,14 +41,6 @@ const useArtplayer = (getInstance) => {
               title: 'Quality',
               auto: 'Auto',
             }),
-
-            // artplayerPluginChapter({
-            //   chapters: watchInfo?.skipTime?.results?.map(item => ({
-            //     start: item?.interval?.startTime,
-            //     end: item?.skipType === "ed" ? Infinity : item?.interval?.endTime,
-            //     title: item?.skipType === "op" ? "opening" : item?.skipType === "ed" ? "ending" : ""
-            //   })) || [],
-            // }),
 
           ],
           customType: {
@@ -84,35 +77,7 @@ const useArtplayer = (getInstance) => {
         });
 
 
-        function throttle(func, limit) {
-          let lastFunc, lastRan;
-          return function (...args) {
-            const context = this;
-            if (!lastRan) {
-              func.apply(context, args);
-              lastRan = Date.now();
-            } else {
-              clearTimeout(lastFunc);
-              lastFunc = setTimeout(() => {
-                if (Date.now() - lastRan >= limit) {
-                  func.apply(context, args);
-                  lastRan = Date.now();
-                }
-              }, Math.max(limit - (Date.now() - lastRan), 0));
-            }
-          };
-        }
 
-        const throttledSaveProgress = throttle((data) => {
-          SaveProgress(
-            animeid,
-            episode,
-            data?.target?.currentTime,
-            watchInfo?.thumbnail,
-            data?.target?.duration,
-            watchInfo?.title || AnimeInfo?.title?.english || AnimeInfo?.title?.romaji
-          );
-        }, 8000);
 
         art.on('video:timeupdate', throttledSaveProgress);
 
