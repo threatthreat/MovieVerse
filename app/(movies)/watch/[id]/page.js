@@ -18,13 +18,11 @@ const Watch = async ({ params, searchParams }) => {
   const { media_type } = searchParams
 
   const MovieInfo = await getInfoTMDB(MovieId, media_type)
-  // Check if there's an error fetching the media type
 
   if (MovieInfo === "media_type_error") {
     return <MovieNotFound />
   }
 
-  // Handle the case where MovieInfo is null (error during fetching)
   if (!MovieInfo) {
     return (
       <div>

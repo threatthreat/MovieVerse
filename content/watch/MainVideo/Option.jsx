@@ -8,7 +8,7 @@ import { BiCollapse } from "react-icons/bi";
 
 const Option = () => {
   const { setWatchSetting, watchSetting } = useWatchSettingContext()
-  const { setEpisode } = useWatchContext()
+  const { setEpisode, MovieInfo } = useWatchContext()
 
   return (
     <div className="flex justify-between bg-[#22212c] px-2 py-2 text-slate-200 text-sm max-[880px]:flex-col max-[880px]:gap-5">
@@ -38,18 +38,25 @@ const Option = () => {
           onClick={() => setWatchSetting(prev => ({ ...prev, autoNext: !prev.autoNext }))}
         >Auto Next <span className="text-[#e26bbd]">{watchSetting.autoNext ? "On" : "Off"}</span></div>
 
-        <div className="flex items-center gap-2 cursor-pointer">Auto Skip Intro <span className="text-[#e26bbd]">Off</span></div>
       </div>
 
       <div className="flex gap-3">
         <div
           className="flex items-center gap-2 cursor-pointer"
-          onClick={() => setEpisode(prev => prev > 1 ? prev - 1 : prev)}
+          onClick={() => {
+            if (MovieInfo?.type === "tv") {
+              setEpisode(prev => prev > 1 ? prev - 1 : prev)
+            }
+          }}
         ><span><FaBackward /></span> Prev</div>
 
         <div
           className="flex items-center gap-2 cursor-pointer"
-          onClick={() => setEpisode(prev => prev + 1)}
+          onClick={() => {
+            if (MovieInfo?.type === "tv") {
+              setEpisode(prev => prev + 1)
+            }
+          }}
         >Next <span><FaForward /></span></div>
       </div>
     </div>

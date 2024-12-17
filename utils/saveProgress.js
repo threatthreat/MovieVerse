@@ -1,5 +1,5 @@
 export const SaveProgress = (
-  animeid,
+  movieid,
   season,
   episode,
   currentTime,
@@ -14,8 +14,8 @@ export const SaveProgress = (
 
   const updatedData = {
     ...jsonifyLocalStorageData,
-    [animeid]: {
-      animeid,
+    [movieid]: {
+      movieid,
       season,
       episode,
       currentTime,

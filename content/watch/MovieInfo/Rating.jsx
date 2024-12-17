@@ -27,7 +27,7 @@ const Rating = ({ info }) => {
           <IoStar />
         </div>
 
-        <div className="mt-3 text-[#858792] font-['poppins',_sans-serif] text-sm">Rate this anime or f**k u??</div>
+        <div className="mt-3 text-[#858792] font-['poppins',_sans-serif] text-sm">Rate this movie or f**k u??</div>
       </div>
 
     </div>

@@ -10,7 +10,7 @@ import { SaveProgress } from '@/utils/saveProgress';
 
 
 const useArtplayer = (getInstance) => {
-  const { setEpisode, watchInfo, episode, animeid, AnimeInfo } = useWatchContext();
+  const { setEpisode, watchInfo, episode } = useWatchContext();
   const { watchSetting } = useWatchSettingContext();
   const artRef = useRef();
 
@@ -87,11 +87,11 @@ const useArtplayer = (getInstance) => {
 
           if (
             watch_history &&
-            watch_history[animeid] &&
-            watch_history[animeid].episode?.toString() === episode?.toString() &&
-            watch_history[animeid].currentTime
+            watch_history[movieid] &&
+            watch_history[movieid].episode?.toString() === episode?.toString() &&
+            watch_history[movieid].currentTime
           ) {
-            const currentTime = parseInt(watch_history[animeid].currentTime, 10);
+            const currentTime = parseInt(watch_history[movieid].currentTime, 10);
             if (!isNaN(currentTime)) {
               art.seek = currentTime;
 

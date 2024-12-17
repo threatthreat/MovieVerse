@@ -1,7 +1,7 @@
 export const getWatchProgress = (isSlice = true) => {
-  const animeData = JSON.parse(localStorage.getItem("watch_history") || "{}");
+  const movieData = JSON.parse(localStorage.getItem("watch_history") || "{}");
 
-  const entries = Object.entries(animeData);
+  const entries = Object.entries(movieData);
 
   // Sort the entries based on updatedDate
   const sortedData = entries.sort(([, a], [, b]) => {
@@ -16,7 +16,7 @@ export const getWatchProgress = (isSlice = true) => {
   // Map the data to the desired format
   const data = processedData.map(([key, item]) => ({
     id: key,
-    animeid: item.animeid,
+    movieid: item.movieid,
     episode: item.episode,
     thumbnail: item.thumbnail,
     title: item.title || '', // title might be undefined, so we provide a fallback
