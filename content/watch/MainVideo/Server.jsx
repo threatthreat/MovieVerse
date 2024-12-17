@@ -1,5 +1,5 @@
+import React, { useEffect } from "react";
 import { useWatchContext } from "@/context/Watch";
-import { useEffect } from "react";
 
 const Server = () => {
   const { MovieId, setWatchInfo, watchInfo, MovieInfo, episode, season } =
@@ -26,8 +26,69 @@ const Server = () => {
   const MovievideoPlayerEntry = Object.entries(MovieVideoPlayers);
   const TVVideoPlayerEntry = Object.entries(TVVideoPlayers);
 
-  const setdefault = () => {
+  const fetchServerUrl = async () => {
+    const BASE_URL = "https://api.vidjoy.pro/rabbit/fetch/";
+    const PROXY_URL = "https://slave.docadan488.workers.dev/proxy?url=";
+
+    const headers = {
+      "x-api-key": process.env.RABBIT_API_KEY
+    };
+
+    let url = BASE_URL + MovieId;
+
+    if (MovieInfo?.type === "tv") {
+      url += `?ss=${season}&ep=${episode}&sr=0`;
+    } else {
+      url += "?sr=0"
+    }
+
+    try {
+      const fetchURL = PROXY_URL + btoa(url) + `&headers=${btoa(JSON.stringify(headers))}`;
+
+      const response = await fetch(fetchURL);
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const jsondata = await response.json();
+
+      return {
+        url: jsondata?.url[0]?.link,
+        referer: jsondata?.headers?.Referer,
+        subtitle: jsondata?.tracks,
+        item: url.includes("sr=0") ? "upcloud" : "mega"
+      };
+    } catch (error) {
+      console.error("Error in fetchServerUrl:", error);
+      return null;
+    }
+  };
+
+  const setdefault = async () => {
     if (MovieInfo?.type === "movie") {
+      try {
+        const data = await fetchServerUrl();
+
+        if (data) {
+          setWatchInfo({
+            server: data.url,
+            item: data.item,
+            referer: data.referer,
+            subtitle: data.subtitle,
+            iframe: false,
+            loading: false,
+          });
+          return;
+        } else {
+          setWatchInfo({ loading: false });
+        }
+      } catch (error) {
+        console.error("Error fetching server URL:", error);
+        setWatchInfo({ loading: false });
+      }
+
+      // Fallback if no server URL found
       if (!watchInfo?.url) {
         setWatchInfo({
           url: MovievideoPlayerEntry[0][1],
@@ -46,7 +107,7 @@ const Server = () => {
 
   useEffect(() => {
     setdefault();
-  }, [episode, season]);
+  }, [episode, season, MovieInfo]);
 
   const changeServer = async (item, isIframe = true) => {
     setWatchInfo({ loading: true });
@@ -63,45 +124,6 @@ const Server = () => {
       return; // Exit early for iframe case
     }
 
-    const fetchServerUrl = async () => {
-      const BASE_URL = "https://api.vidjoy.pro/rabbit/fetch/";
-      const PROXY_URL = "https://slave.docadan488.workers.dev/proxy?url=";
-
-      const headers = {
-        "x-api-key": process.env.RABBIT_API_KEY
-      };
-
-      let url = BASE_URL + MovieId;
-
-      if (MovieInfo?.type === "tv") {
-        url += `?ss=${season}&ep=${episode}&sr=0`;
-      } else {
-        url += "?sr=0"
-      }
-      try {
-        const fetchURL = PROXY_URL + btoa(url) + `&headers=${btoa(JSON.stringify(headers))}`
-
-        const response = await fetch(fetchURL);
-
-        if (!response.ok) {
-          setdefault();
-          return null;
-        }
-
-        const jsondata = await response.json();
-
-
-        return {
-          url: jsondata?.url[0]?.link,
-          referer: jsondata?.headers?.Referer,
-          subtitle: jsondata?.tracks,
-        };
-      } catch (error) {
-        console.error("Error in fetchServerUrl:", error);
-        return null;
-      }
-    };
-
     try {
       const data = await fetchServerUrl();
 
@@ -114,6 +136,7 @@ const Server = () => {
           iframe: false,
           loading: false,
         });
+
       } else {
         setWatchInfo({ loading: false });
       }
@@ -150,18 +173,16 @@ const Server = () => {
           {(MovieInfo?.type === "movie"
             ? MovievideoPlayerEntry
             : TVVideoPlayerEntry
-          )?.map((item) => {
-            return (
-              <div
-                key={item[0]}
-                onClick={() => changeServer(item)}
-                style={{ background: watchInfo?.url === item[1] && "#4a446c" }}
-                className="px-4 py-[6px] text-[15px] bg-[#413d57] hover:bg-[#4a446c] border border-[#5b5682] rounded-md cursor-pointer"
-              >
-                {item[0]}
-              </div>
-            );
-          })}
+          )?.map((item) => (
+            <div
+              key={item[0]}
+              onClick={() => changeServer(item)}
+              style={{ background: watchInfo?.url === item[1] ? "#4a446c" : undefined }}
+              className="px-4 py-[6px] text-[15px] bg-[#413d57] hover:bg-[#4a446c] border border-[#5b5682] rounded-md cursor-pointer"
+            >
+              {item[0]}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -187,18 +208,16 @@ const Server = () => {
           Player&nbsp;
         </div>
         <div className="flex gap-2">
-          {defaultVideoServers?.map((item) => {
-            return (
-              <div
-                key={item}
-                onClick={() => changeServer(item, false)}
-                style={{ background: watchInfo?.item === item && "#4a446c" }}
-                className="px-4 py-[6px] text-[15px] bg-[#413d57] hover:bg-[#4a446c] border border-[#5b5682] rounded-md cursor-pointer"
-              >
-                {item}
-              </div>
-            );
-          })}
+          {defaultVideoServers?.map((item) => (
+            <div
+              key={item}
+              onClick={() => changeServer(item, false)}
+              style={{ background: watchInfo?.item === item ? "#4a446c" : undefined }}
+              className="px-4 py-[6px] text-[15px] bg-[#413d57] hover:bg-[#4a446c] border border-[#5b5682] rounded-md cursor-pointer"
+            >
+              {item}
+            </div>
+          ))}
         </div>
       </div>
     </div>
