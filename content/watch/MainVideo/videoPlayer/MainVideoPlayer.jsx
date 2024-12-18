@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
-import { MediaPlayer, MediaProvider, useMediaRemote, useMediaStore } from '@vidstack/react';
+import { MediaPlayer, MediaProvider, Track, useMediaRemote, useMediaStore } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
 import { FaPlay } from "react-icons/fa6";
 import { useWatchContext } from '@/context/Watch';
@@ -73,6 +74,9 @@ const MainVideoPlayer = ({ videoInfo, movieInfo }) => {
         title={(movieInfo?.title || movieInfo?.name)?.length > 20 ? `${(movieInfo?.title || movieInfo?.name).slice(0, 20)}...` : (movieInfo?.title || movieInfo?.name)}
         viewType='video'
         logLevel='warn'
+        load='eager'
+        posterLoad='eager'
+        streamType='on-demand'
         crossOrigin
         playsInline
         src={`https://m3-u8-proxy-iota.vercel.app/m3u8-proxy?url=${encodeURIComponent(videoInfo?.server)}&headers=${encodeURIComponent(`{"referer": "${videoInfo?.referer}"}`)}`}
@@ -81,6 +85,14 @@ const MainVideoPlayer = ({ videoInfo, movieInfo }) => {
       >
         <MediaProvider />
         <DefaultVideoLayout icons={defaultLayoutIcons} />
+
+        {videoInfo?.subtitle.map(item => <Track
+          key={item?.lang}
+          src="https://cca.megafiles.store/bc/29/bc29f4ff9607c5e3a948dfe76a38fb09/eng-2.vtt"
+          kind="subtitles"
+          label={item?.lang}
+        />)}
+
       </MediaPlayer>
     </div >
   )
