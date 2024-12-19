@@ -3,7 +3,6 @@ import VideoPlayerContainer from './VideoPlayerContainer';
 
 const VideoPlayer = ({ getInstance }) => {
   const { watchInfo, MovieInfo } = useWatchContext()
-  // return <VideoPlayerContainer getInstance={getInstance} />;
   return watchInfo?.iframe ?
     <iframe
       src={watchInfo?.url}
