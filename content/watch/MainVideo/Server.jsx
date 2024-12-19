@@ -5,7 +5,7 @@ const Server = () => {
   const { MovieId, setWatchInfo, watchInfo, MovieInfo, episode, season } =
     useWatchContext();
 
-  const defaultVideoServers = ["upcloud"];
+  const defaultVideoServers = ["upcloud", "megacloud"];
 
   const MovieVideoPlayers = {
     "vidsrc.dev": `https://vidsrc.dev/embed/movie/${MovieId}`,
@@ -26,7 +26,7 @@ const Server = () => {
   const MovievideoPlayerEntry = Object.entries(MovieVideoPlayers);
   const TVVideoPlayerEntry = Object.entries(TVVideoPlayers);
 
-  const fetchServerUrl = async () => {
+  const fetchServerUrl = async (server) => {
     const BASE_URL = "https://api.vidjoy.pro/rabbit/fetch/";
     const PROXY_URL = "https://slave.docadan488.workers.dev/proxy?url=";
 
@@ -36,16 +36,16 @@ const Server = () => {
 
     let url = BASE_URL + MovieId;
 
+    url += `?sr=${server === "upcloud" ? 0 : 1}`
+
     if (MovieInfo?.type === "tv") {
-      url += `?ss=${season}&ep=${episode}&sr=0`;
-    } else {
-      url += "?sr=0"
+      url += `&ss=${season}&ep=${episode}`;
     }
 
     try {
       const fetchURL = PROXY_URL + btoa(url) + `&headers=${btoa(JSON.stringify(headers))}`;
 
-      const response = await fetch(fetchURL);
+      const response = await fetch(fetchURL, { next: { revalidate: 43200 } });
 
       if (!response.ok) {
         return null;
@@ -57,7 +57,7 @@ const Server = () => {
         url: jsondata?.url[0]?.link,
         referer: jsondata?.headers?.Referer,
         subtitle: jsondata?.tracks,
-        item: url.includes("sr=0") ? "upcloud" : "mega"
+        item: server
       };
     } catch (error) {
       console.error("Error in fetchServerUrl:", error);
@@ -65,48 +65,41 @@ const Server = () => {
     }
   };
 
-  const setdefault = async () => {
-    if (MovieInfo?.type === "movie") {
-      try {
-        const data = await fetchServerUrl();
-
-        if (data) {
-          setWatchInfo({
-            server: data.url,
-            item: data.item,
-            referer: data.referer,
-            subtitle: data.subtitle,
-            iframe: false,
-            loading: false,
-          });
-          return;
-        } else {
-          setWatchInfo({ loading: false });
-        }
-      } catch (error) {
-        console.error("Error fetching server URL:", error);
-        setWatchInfo({ loading: false });
-      }
-
-      // Fallback if no server URL found
-      if (!watchInfo?.url) {
+  const setdefault = async (server) => {
+    try {
+      const data = await fetchServerUrl(server);
+      console.log(data);
+      if (data) {
         setWatchInfo({
-          url: MovievideoPlayerEntry[0][1],
-          iframe: true,
+          server: data.url,
+          item: data.item,
+          referer: data.referer,
+          subtitle: data.subtitle,
+          iframe: false,
           loading: false,
         });
+        return;
+      } else {
+        setWatchInfo({ loading: false });
       }
-    } else {
+    } catch (error) {
+      console.error("Error fetching server URL:", error);
+      setWatchInfo({ loading: false });
+    }
+
+    // Fallback if no server URL found
+    if (!watchInfo?.url) {
       setWatchInfo({
-        url: TVVideoPlayerEntry[0][1],
+        url: MovieInfo?.type === "tv" ? TVVideoPlayerEntry[0][1] : MovievideoPlayerEntry[0][1],
         iframe: true,
         loading: false,
       });
     }
+
   };
 
   useEffect(() => {
-    setdefault();
+    setdefault("upcloud");
   }, [episode, season, MovieInfo]);
 
   const changeServer = async (item, isIframe = true) => {
@@ -121,11 +114,11 @@ const Server = () => {
           loading: false,
         });
       }
-      return; // Exit early for iframe case
+      return;
     }
 
     try {
-      const data = await fetchServerUrl();
+      const data = await fetchServerUrl(item);
 
       if (data) {
         setWatchInfo({

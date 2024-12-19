@@ -3,7 +3,6 @@ import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider, Track, useMediaRemote, useMediaStore } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
-import { FaPlay } from "react-icons/fa6";
 import { useWatchContext } from '@/context/Watch';
 import { SaveProgress } from '@/utils/saveProgress';
 import { useEffect, useRef, useState } from 'react';
