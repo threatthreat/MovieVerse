@@ -11,7 +11,7 @@ const MainVideo = () => {
   return (
     <div className="w-full bg-[#22212c] rounded-md p-2 !pb-0 flex flex-col">
 
-      {/* <iframe
+      <iframe
         src={watchInfo?.url}
         className="aspect-video"
         allowFullScreen
@@ -19,7 +19,7 @@ const MainVideo = () => {
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         title={MovieInfo?.title || MovieInfo?.name || MovieInfo?.original_name || MovieInfo?.original_title}
-      /> */}
+      />
 
       <Option />
 
