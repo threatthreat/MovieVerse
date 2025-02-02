@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import SearchResults from "./SearchResults";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Search = () => {
   const router = useRouter()

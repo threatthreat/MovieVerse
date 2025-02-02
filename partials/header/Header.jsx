@@ -5,6 +5,7 @@ import Image from "next/image"
 import Links from "./Links"
 import Search from "./Search"
 import Responsive from "./Responsive"
+import Profile from "./Profile"
 
 
 const Header = () => {
@@ -32,6 +33,7 @@ const Header = () => {
 
         <div className={`${styles.right} min-[1390px]:w-[24%]`}>
           <Search />
+          <Profile />
           {/* notification */}
           {/* <div className="text-2xl text-slate-200">
             <Bell />

@@ -7,6 +7,8 @@ const Popular = () => {
   const [page, setPage] = useState(1)
   const [popularData, setPopularData] = useState([])
   const [loading, setLoading] = useState(true)
+
+
   useEffect(() => {
     const getPopular = async () => {
       setLoading(true)

@@ -1,4 +1,4 @@
-export const getWatchProgress = (isSlice = true) => {
+export const getWatchProgress = (isSlice = true, page = 1, pageSize = 4) => {
   const movieData = JSON.parse(localStorage.getItem("watch_history") || "{}");
 
   const entries = Object.entries(movieData);
@@ -10,8 +10,12 @@ export const getWatchProgress = (isSlice = true) => {
     return dateB - dateA;
   });
 
-  // Conditionally slice the array if isSlice is true
-  const processedData = isSlice ? sortedData.slice(0, 4) : sortedData;
+  // Calculate start and end indices for pagination
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+
+  // Conditionally slice the array based on pagination
+  const processedData = isSlice ? sortedData.slice(startIndex, endIndex) : sortedData;
 
   // Map the data to the desired format
   const data = processedData.map(([key, item]) => ({
@@ -47,7 +51,7 @@ export const saveWatchProgress = (
 
 
   const episodeInfo = episodes[episode - 1]
-  console.log(data, episodeInfo)
+  // console.log(data, episodeInfo)
 
   const historyData = {
     [id]: {

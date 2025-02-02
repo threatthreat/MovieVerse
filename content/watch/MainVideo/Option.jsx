@@ -1,14 +1,15 @@
 import { LuExpand } from "react-icons/lu";
 import { FaForward, FaLightbulb } from "react-icons/fa6";
 import { FaBackward } from "react-icons/fa";
-import { GoPlus } from "react-icons/go";
 import { useWatchSettingContext } from "@/context/WatchSetting";
 import { useWatchContext } from "@/context/Watch";
 import { BiCollapse } from "react-icons/bi";
+import AddToList from "@/components/AddToList";
 
-const Option = () => {
+const Option = ({ isMovieExists }) => {
   const { setWatchSetting, watchSetting } = useWatchSettingContext()
   const { setEpisode, MovieInfo } = useWatchContext()
+
 
   return (
     <div className="flex justify-between bg-[#22212c] px-2 py-2 text-slate-200 text-sm max-[880px]:flex-col max-[880px]:gap-5">
@@ -58,6 +59,8 @@ const Option = () => {
             }
           }}
         >Next <span><FaForward /></span></div>
+
+        <AddToList movieInfo={MovieInfo} isMovieExists={isMovieExists} />
       </div>
     </div>
   )

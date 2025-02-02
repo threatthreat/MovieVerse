@@ -3,6 +3,7 @@ import Image from "next/image"
 import styles from "./Card.module.css"
 import Link from "next/link"
 import { getLanguageCode } from "@/utils/SmallPrograms"
+import { motion } from "framer-motion"
 
 const Card = ({ data, index, loading, hidden, type }) => {
 
@@ -12,6 +13,12 @@ const Card = ({ data, index, loading, hidden, type }) => {
     ></div>
   }
 
+  const listItem = {
+    hidden: { scale: 0 },
+    show: { scale: 1 }
+  };
+
+
   if (loading) {
     return <div
       className={`${styles.bounce} aspect-[9/14] rounded-2xl cursor-pointer mb-2 bg-[#22212c]`}
@@ -20,7 +27,7 @@ const Card = ({ data, index, loading, hidden, type }) => {
   }
 
   return (
-    <div className="aspect-[9/14] rounded-2xl cursor-pointer mb-2 relative" >
+    <motion.div className="aspect-[9/14] rounded-2xl cursor-pointer mb-2 relative" variants={listItem}>
       <Link href={`/watch/${data?.id}?media_type=${data?.media_type || type || "movie"}`} className={`${styles.wrapper}`}>
         <Image
           src={data?.poster_path ? `https://image.tmdb.org/t/p/w500${data?.poster_path}` : `https://s4.anilist.co/file/anilistcdn/character/large/default.jpg`}
@@ -47,7 +54,7 @@ const Card = ({ data, index, loading, hidden, type }) => {
 
       <div className="text-[#efebebf2] font-['Poppins'] font-medium text-[14px] mt-2 text-center line-clamp-2 text-ellipsis overflow-hidden mx-3">{data?.title || data?.name || data?.original_name || data?.original_title}</div>
 
-    </div>
+    </motion.div>
   )
 }
 
