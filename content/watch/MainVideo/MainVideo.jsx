@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useUserInfoContext } from "@/context/UserInfoContext";
 
 const MainVideo = () => {
-  const { MovieInfo, episode } = useWatchContext();
+  const { MovieInfo, watchInfo, episode } = useWatchContext();
   const { userInfo } = useUserInfoContext()
   const [isMovieExists, setIsMovieExists] = useState({})
 
