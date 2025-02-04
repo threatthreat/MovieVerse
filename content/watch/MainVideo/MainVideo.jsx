@@ -30,7 +30,7 @@ const MainVideo = () => {
     <div className="w-full bg-[#22212c] rounded-md p-2 !pb-0 flex flex-col">
 
       <iframe
-        // src={watchInfo?.url}
+        src={watchInfo?.url}
         className="aspect-video"
         allowFullScreen
         loading="lazy"
