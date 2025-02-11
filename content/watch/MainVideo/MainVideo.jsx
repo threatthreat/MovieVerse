@@ -7,10 +7,13 @@ import Server from "./Server";
 import { findMovieFromCollection } from "@/firebase/movies";
 import { useEffect, useState } from "react";
 import { useUserInfoContext } from "@/context/UserInfoContext";
+import { useWatchSettingContext } from "@/context/WatchSetting";
+import { AnimatePresence, motion } from "framer-motion"
 
 const MainVideo = () => {
   const { MovieInfo, watchInfo, episode } = useWatchContext();
-  const { userInfo } = useUserInfoContext()
+  const { watchSetting, setWatchSetting } = useWatchSettingContext()
+  const { userInfo, isUserLoggedIn } = useUserInfoContext()
   const [isMovieExists, setIsMovieExists] = useState({})
 
   useEffect(() => {
@@ -22,16 +25,15 @@ const MainVideo = () => {
       setIsMovieExists(isExists)
     }
 
-    getdata()
+    if (isUserLoggedIn) getdata()
   }, [userInfo])
 
 
   return (
     <div className="w-full bg-[#22212c] rounded-md p-2 !pb-0 flex flex-col">
-
       <iframe
         src={watchInfo?.url}
-        className="aspect-video"
+        className="aspect-video z-10"
         allowFullScreen
         loading="lazy"
         frameBorder="0"
@@ -46,7 +48,20 @@ const MainVideo = () => {
         <Server />
       </div>
 
-    </div>
+
+      {/* settings */}
+      <AnimatePresence>
+        {watchSetting?.light ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed top-0 left-0 w-full h-full z-20 bg-[#000000e5]'
+            onClick={() => setWatchSetting(prev => ({ ...prev, light: false }))}
+          ></motion.div>
+        ) : null}
+      </AnimatePresence>
+    </div >
   )
 }
 

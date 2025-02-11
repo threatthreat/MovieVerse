@@ -32,7 +32,7 @@ const Page = () => {
   }
 
 
-  return (
+  return isUserLoggedIn && (
     <Fragment>
       <Banner info={userInfo} totalMovies={totalMovies} loading={loading} />
       <CategoryMain info={userInfo} loading={loading} totalMovies={totalMovies} />

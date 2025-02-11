@@ -54,7 +54,7 @@ const EpisodeSelector = () => {
   }, []);
 
   return (
-    <div className="bg-[#201f28] w-full max-w-[22rem] EPSResponsive rounded-md flex flex-col">
+    <div className="bg-[#201f28] w-full max-w-[22rem] min-w-[18rem] EPSResponsive rounded-md flex flex-col">
       <div>
         <div className="flex justify-between px-2 py-3 border-b-2 border-[#514f61a1]">
           <div className="bg-[#2e2b3d] h-10 rounded-md">

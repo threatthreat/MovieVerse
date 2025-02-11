@@ -5,10 +5,12 @@ import { useWatchSettingContext } from "@/context/WatchSetting";
 import { useWatchContext } from "@/context/Watch";
 import { BiCollapse } from "react-icons/bi";
 import AddToList from "@/components/AddToList";
+import { useUserInfoContext } from "@/context/UserInfoContext";
 
 const Option = ({ isMovieExists }) => {
   const { setWatchSetting, watchSetting } = useWatchSettingContext()
   const { setEpisode, MovieInfo } = useWatchContext()
+  const { isUserLoggedIn } = useUserInfoContext()
 
 
   return (
@@ -60,7 +62,8 @@ const Option = ({ isMovieExists }) => {
           }}
         >Next <span><FaForward /></span></div>
 
-        <AddToList movieInfo={MovieInfo} isMovieExists={isMovieExists} />
+
+        {isUserLoggedIn && <AddToList movieInfo={MovieInfo} isMovieExists={isMovieExists} />}
       </div>
     </div>
   )
