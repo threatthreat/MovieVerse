@@ -1,6 +1,6 @@
 <div align="center">
   <a href="" target="_blank">
-    <img src="images/logo-2.png" alt="Logo" width="140" height="140">
+    <img src="https://github.com/Amritanshu312/MovieVerse/blob/main/public/images/logo-2.png" alt="Logo" width="140" height="140">
   </a>
 
   <h2 align="center">MovieVerse</h3>
@@ -99,69 +99,58 @@ Start the server
 ```bash
   npm run dev
 ```
+
 ## 🔥: Firebase Setup Guide
 
 1. **Create a Firebase Project**:
-    Go to the Firebase Console
-    Click on "Add project" and follow the prompts:
-    - Enter a project name (e.g., "MovieVerse").
-    - Choose whether to enable Google Analytics.
-    - Accept the terms and create the project.
-<br/>
+   Go to the Firebase Console
+   Click on "Add project" and follow the prompts: - Enter a project name (e.g., "MovieVerse"). - Choose whether to enable Google Analytics. - Accept the terms and create the project.
+   <br/>
 
-2. **Register Your App with Firebase**:
-    - From the Firebase project dashboard, click on the web icon (</>).
-    - Register your app with a nickname (e.g., "movieverse-web").
-    - Check the box to set up Firebase Hosting if needed.
-    - Click "Register app"
-<br/>
+2. **Register Your App with Firebase**: - From the Firebase project dashboard, click on the web icon (</>). - Register your app with a nickname (e.g., "movieverse-web"). - Check the box to set up Firebase Hosting if needed. - Click "Register app"
+   <br/>
 
-3. **Enable Authentication Methods**:
-    - In the Firebase Console, go to "Authentication" > "Sign-in method".
-    - Enable the authentication methods you need ( Google ).
-<br/>
+3. **Enable Authentication Methods**: - In the Firebase Console, go to "Authentication" > "Sign-in method". - Enable the authentication methods you need ( Google ).
+   <br/>
 
-4. **Set Up Firestore Database**:
-    - Go to "Firestore Database" in the Firebase Console.
-    - Click "Create database".
-    - Select either "Production mode" or "Test mode" (start with Test mode for development).
-    - Choose a database location closest to your users.
-    - Click "Enable"
-<br/>
+4. **Set Up Firestore Database**: - Go to "Firestore Database" in the Firebase Console. - Click "Create database". - Select either "Production mode" or "Test mode" (start with Test mode for development). - Choose a database location closest to your users. - Click "Enable"
+   <br/>
 
 5. **Configure Firestore Security Rules**:
-    - Go to "Firestore Database" > "Rules" tab
-    - Set up basic security rules:
-      ```
-      rules_version = '2';
 
-      service cloud.firestore {
-        match /databases/{database}/documents {
-          match /{document=**} {
-            allow read,write,delete: if false;
-          }
-          
-          match /users/{userId} {
-            allow read, write: if request.auth != null && request.auth.uid == userId;
-            allow write: if request.auth != null && request.auth.uid == request.resource.data.uid && request.resource.data.feed_description != "";
-            allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
-          }  
-          
-          match /savedMovies/{uid}/{status}/{movieId} {
-            
-            // Ensure only authenticated users can perform actions on their own data
-            allow read, write: if request.auth != null && request.auth.uid == uid;
+   - Go to "Firestore Database" > "Rules" tab
+   - Set up basic security rules:
 
-            // Optional: You can define more granular rules for certain actions like create, update, delete:
-            allow create: if request.auth != null && request.auth.uid == uid && request.resource.data.status in ["CURRENT", "PLANNING", "COMPLETED", "PAUSED", "DROPPED"];
-            allow delete: if request.auth != null && request.auth.uid == uid;
-          }
+     ```
+     rules_version = '2';
 
-          // Optional: You could have a more global rule for accessing the "savedMovies" collection.
-          match /savedMovies/{uid} {
-            allow read: if request.auth != null && request.auth.uid == uid;
-            allow write: if request.auth != null && request.auth.uid == uid;
-          }
-        }
-      }
-      ```
+     service cloud.firestore {
+       match /databases/{database}/documents {
+         match /{document=**} {
+           allow read,write,delete: if false;
+         }
+
+         match /users/{userId} {
+           allow read, write: if request.auth != null && request.auth.uid == userId;
+           allow write: if request.auth != null && request.auth.uid == request.resource.data.uid && request.resource.data.feed_description != "";
+           allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
+         }
+
+         match /savedMovies/{uid}/{status}/{movieId} {
+
+           // Ensure only authenticated users can perform actions on their own data
+           allow read, write: if request.auth != null && request.auth.uid == uid;
+
+           // Optional: You can define more granular rules for certain actions like create, update, delete:
+           allow create: if request.auth != null && request.auth.uid == uid && request.resource.data.status in ["CURRENT", "PLANNING", "COMPLETED", "PAUSED", "DROPPED"];
+           allow delete: if request.auth != null && request.auth.uid == uid;
+         }
+
+         // Optional: You could have a more global rule for accessing the "savedMovies" collection.
+         match /savedMovies/{uid} {
+           allow read: if request.auth != null && request.auth.uid == uid;
+           allow write: if request.auth != null && request.auth.uid == uid;
+         }
+       }
+     }
+     ```
