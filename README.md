@@ -100,21 +100,39 @@ Start the server
   npm run dev
 ```
 
-## 🔥: Firebase Setup Guide
+##🔥: Firebase Setup Guide
 
 1. **Create a Firebase Project**:
-   Go to the Firebase Console
-   Click on "Add project" and follow the prompts: - Enter a project name (e.g., "MovieVerse"). - Choose whether to enable Google Analytics. - Accept the terms and create the project.
-   <br/>
 
-2. **Register Your App with Firebase**: - From the Firebase project dashboard, click on the web icon (</>). - Register your app with a nickname (e.g., "movieverse-web"). - Check the box to set up Firebase Hosting if needed. - Click "Register app"
-   <br/>
+   - Go to the Firebase Console
+   - Click on "Add project" and follow the prompts:
+   - Enter a project name (e.g., "MovieVerse").
+   - Choose whether to enable Google Analytics.
+   - Accept the terms and create the project.
+     <br/>
 
-3. **Enable Authentication Methods**: - In the Firebase Console, go to "Authentication" > "Sign-in method". - Enable the authentication methods you need ( Google ).
-   <br/>
+2. **Register Your App with Firebase**:
 
-4. **Set Up Firestore Database**: - Go to "Firestore Database" in the Firebase Console. - Click "Create database". - Select either "Production mode" or "Test mode" (start with Test mode for development). - Choose a database location closest to your users. - Click "Enable"
-   <br/>
+   - From the Firebase project dashboard, click on the web icon (</>).
+   - Register your app with a nickname (e.g., "movieverse-web").
+   - Check the box to set up Firebase Hosting if needed.
+   - Click "Register app"
+     <br/>
+
+3. **Enable Authentication Methods**:
+
+   - In the Firebase Console, go to "Authentication" > "Sign-in method".
+   - Enable the authentication methods you need ( Google ).
+     <br/>
+
+4. **Set Up Firestore Database**:
+
+   - Go to "Firestore Database" in the Firebase Console.
+   - Click "Create database".
+   - Select either "Production mode" or "Test mode" (start with Test mode for development).
+   - Choose a database location closest to your users.
+   - Click "Enable"
+     <br/>
 
 5. **Configure Firestore Security Rules**:
 
