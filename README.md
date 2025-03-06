@@ -1,6 +1,6 @@
 <div align="center">
   <a href="" target="_blank">
-    <img src="https://github.com/Amritanshu312/MovieVerse/blob/main/public/images/logo-2.png" alt="Logo" width="140" height="140">
+    <img src="https://github.com/Amritanshu312/MovieVerse/blob/main/public/images/logo-2.png" alt="Logo">
   </a>
 
   <h2 align="center">MovieVerse</h3>
