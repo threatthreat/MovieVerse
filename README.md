@@ -100,7 +100,7 @@ Start the server
   npm run dev
 ```
 
-##🔥: Firebase Setup Guide
+## 🔥: Firebase Setup Guide
 
 1. **Create a Firebase Project**:
 
